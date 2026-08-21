@@ -4,8 +4,6 @@ date = 2026-08-14T11:25:02+08:00
 draft = false
 +++
 
-# Evaluating Varas-OneMind on CyberGym
-
 CyberGym is a large-scale public benchmark for vulnerability analysis and reproduction proposed by UC Berkeley. It contains 1,507 real-world vulnerability tasks covering 188 widely used open-source software projects. The vulnerabilities are primarily collected from Google's continuous fuzzing platform OSS-Fuzz, with most tasks focusing on memory safety vulnerabilities in C/C++ projects.
 
 In the core Level 1 tasks, the model is provided only with the vulnerability description and the complete source repository before the patch. It must autonomously analyze the code, locate the vulnerability-triggering path, and construct a runnable PoC. The reproduction is considered successful only when the generated PoC triggers the vulnerability on the pre-patch version but fails to trigger it on the post-patch version.
