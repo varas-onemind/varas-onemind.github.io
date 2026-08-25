@@ -32,7 +32,7 @@ Varas-OneMind explicitly decomposes the complex task of "**locating vulnerabilit
 
 - **Reflection and path switching**: When a Source-to-Sink pair fails to trigger the vulnerability within the allowed number of iterations, the system switches to the next candidate path. Before switching, the LLM summarizes and reflects on the failure process, saving failure causes and experiences for future path analysis and PoC construction.
 
-## Tool Implementation
+## Prototype Implementation
 
 We implemented the above workflow as a state machine and built Varas-OneMind from scratch. Except for verification, each stage invokes the LLM as an independent "sub-task", where the model only produces the artifact required by the current stage.
 
