@@ -1,5 +1,5 @@
 +++
-title = 'Evaluating Varas-OneMind on CyberGym'
+title = 'Evaluating VARAS-OneMind on CyberGym'
 date = 2026-08-14T11:25:02+08:00
 draft = false
 +++
@@ -10,11 +10,11 @@ In the core Level 1 tasks, the model is provided only with the vulnerability des
 
 Therefore, CyberGym provides a realistic evaluation of the end-to-end vulnerability analysis and reproduction capabilities of large language models and agents on complex real-world software.
 
-Each task was given a two-hour time budget, and the model used was gpt-5.4. Varas-OneMind successfully solved 1,116 tasks, achieving a score of 74.1, which is 1 point higher than Sweep Monk and 7.8 points higher than Codex + gpt-5.4. The system is still under continuous optimization.
+Each task was given a two-hour time budget, and the model used was gpt-5.4. VARAS-OneMind successfully solved 1,112 tasks, achieving a score of 73.8, which is 0.7 point higher than MopMonk Agent and 7.5 points higher than Codex + gpt-5.4. The system is still under continuous optimization.
 
 ## Workflow
 
-Varas-OneMind explicitly decomposes the complex task of "**locating vulnerabilities and generating PoCs**" into the following stages:
+VARAS-OneMind explicitly decomposes the complex task of "**locating vulnerabilities and generating PoCs**" into the following stages:
 
 - **Locate Sink points**: Based on the vulnerability description, the LLM identifies potential vulnerability Sink points and ranks them according to their relevance to the vulnerability description;
 
@@ -34,11 +34,11 @@ Varas-OneMind explicitly decomposes the complex task of "**locating vulnerabilit
 
 ## Prototype Implementation
 
-We implemented the above workflow as a state machine and built Varas-OneMind from scratch. Except for verification, each stage invokes the LLM as an independent "sub-task", where the model only produces the artifact required by the current stage.
+We implemented the above workflow as a state machine and built VARAS-OneMind from scratch. Except for verification, each stage invokes the LLM as an independent "sub-task", where the model only produces the artifact required by the current stage.
 
 This design keeps each stage relatively small. Under the default 272K context window, automatic context compression is rarely triggered, avoiding the loss of analysis details and the distraction of model attention caused by compression.
 
-Varas-OneMind provides the following tools for the agent:
+VARAS-OneMind provides the following tools for the agent:
 
 * **repo_list**: Lists relative paths inside the restricted repository root with configurable depth and quantity limits;
 
@@ -66,17 +66,17 @@ We guide the LLM to identify the smallest input constraint units along the compl
 
 ## Experimental Setup
 
-Varas-OneMind was evaluated on the CyberGym Level 1 benchmark:
+VARAS-OneMind was evaluated on the CyberGym Level 1 benchmark:
 
 * **Model**: gpt-5.4;
 * **Task budget**: 2 hours per task;
 * **Task input**: Vulnerable source code + vulnerability description + task specification.
 
-Varas-OneMind disables network search and places task inputs inside an isolated workspace to prevent the LLM from exploiting external network information or local environmental information.
+VARAS-OneMind disables network search and places task inputs inside an isolated workspace to prevent the LLM from exploiting external network information or local environmental information.
 
 ## Evaluation Results
 
-The experimental results show that Varas-OneMind successfully solved 1,116 out of 1,507 tasks, achieving a success rate of 74.1%.
+The experimental results show that VARAS-OneMind successfully solved 1,112 out of 1,507 tasks, achieving a success rate of 73.8%.
 
 On average, each task required 265.1 LLM calls and cost approximately $3.47.
 
@@ -94,21 +94,21 @@ We classified the final task states into five categories: **success**, **no_vul_
 
 | Category         | Count | Percentage |
 | ---------------- | ----- | ---------- |
-| success          | 1116  | 74.054%    |
+| success          | 1112  | 73.789%    |
 | no_vul_crash     | 349   | 23.159%    |
 | fix_also_crashes | 25    | 1.659%     |
 | timeout          | 9     | 0.597%     |
-| failed           | 8     | 0.531%     |
+| failed           | 12     | 0.792%     |
 | **Total**        | **1507** | **100.000%** |
 
 We further divided successful tasks into four time buckets based on completion time:
 
 | Time Bucket | Number of Successful Tasks |
 | ----------- | -------------------------- |
-| 0–30 minutes | 763 |
-| 30–60 minutes | 226 |
-| 60–90 minutes | 74 |
-| 90–120 minutes | 53 |
+| 0–30 minutes | 762 |
+| 30–60 minutes | 225 |
+| 60–90 minutes | 73 |
+| 90–120 minutes | 52 |
 
 ## **Case Studies**
 
@@ -254,7 +254,7 @@ After nine executions, the vulnerability was never triggered. The task eventuall
 
 ## Limitations
 
-Varas-OneMind currently relies entirely on the runtime to schedule state-machine execution. The agent cannot explicitly decide to switch to a specific state, making the workflow insufficiently flexible.
+VARAS-OneMind currently relies entirely on the runtime to schedule state-machine execution. The agent cannot explicitly decide to switch to a specific state, making the workflow insufficiently flexible.
 
 For example, when a data-flow path is a "dead end", the system often continues executing the entire workflow before analyzing another candidate path, resulting in wasted execution time.
 
